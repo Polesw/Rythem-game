@@ -1,8 +1,6 @@
-# Rythem-game
-simple rythem game
-
 from pygame import *
 from random import randint
+init()
 
 win_width = 500
 win_height = 900
@@ -14,9 +12,18 @@ img_right_arrow = "/Users/jakeduker/Desktop/rythem game things/right arrow.png" 
 img_left_arrow = "/Users/jakeduker/Desktop/rythem game things/left arrow.png"#arrow facing left
 img_back ="/Users/jakeduker/Desktop/rythem game things/background.png" #background
 
+score = 0
+
+#font
+font = font.Font(None,50)
+Score = font.render(str(score), False,(20,2,30))
+
 window = display.set_mode((win_width, win_height))
 background = transform.scale(image.load(img_back),(win_width, win_height))
 display.set_caption("RYTHEM")
+
+def draw(self, surface):
+        surface.blit(self.image, self.rect)
 
 class GameSprite(sprite.Sprite):
  #class constructor
@@ -48,7 +55,7 @@ class Up_arrow(GameSprite):
        global lost
        #disappears upon reaching the screen edge
        if self.rect.y > win_height:
-           self.rect.x = 217.5
+           self.rect.x = 274
            self.rect.y = 0
 
 
@@ -59,7 +66,7 @@ class Down_arrow(GameSprite):
        global lost
        #disappears upon reaching the screen edge
        if self.rect.y > win_height:
-           self.rect.x = 93.5
+           self.rect.x = 145
            self.rect.y = 0
 
 class Left_arrow(GameSprite):
@@ -79,15 +86,16 @@ class Right_arrow(GameSprite):
        global lost
        #disappears upon reaching the screen edge
        if self.rect.y > win_height:
-           self.rect.x = 280.5
+           self.rect.x = 391
            self.rect.y = 0
 
-up1 = Up_arrow(img_up_arrow,217.5,0,200,200,10)
-down1 = Down_arrow(img_down_arrow,93.5,-120,200,200,10)
-right1 = Right_arrow(img_right_arrow,280.5,-67,200,200,10)
-left1 = Left_arrow(img_left_arrow,20.5,-67,200,200,10)
+up1 = Up_arrow(img_up_arrow,274,0,75,75,5)
+down1 = Down_arrow(img_down_arrow,145,0,75,75,5)
+right1 = Right_arrow(img_right_arrow,391,0,75,75,5)
+left1 = Left_arrow(img_left_arrow,20.5,0,75,75,5)
    #monsters.add(up_arrow)
-
+#score
+score = 0
 #the window
 run = True #the flag is reset by the window close button
 while run:
@@ -95,9 +103,28 @@ while run:
     for e in event.get():
         if e.type == QUIT:
            run = False
+        if e.type == KEYDOWN:
+            if e.key == K_d:
+                print('d key presed')
+                print(left1.rect.y)
+        if e.type == KEYDOWN:
+            if e.key == K_f:
+                print('f key presed')
+                print(down1.rect.y)
+        if e.type == KEYDOWN:
+            if e.key == K_j:  
+                print('j key presed')  
+                print(up1.rect.y)
+        if e.type == KEYDOWN:
+            if e.key == K_k:
+                if right1.rect.y >= 735 and right1.rect.y  <= 760:
+                    score += 1
+                    Score = font.render(str(score), False,(20,2,30))
+                    
     
     window.fill((255,255,255))
     window.blit(background,(0,0))
+    window.blit(Score,(100,300))
     left1.draw()
     left1.update()
     right1.draw()
@@ -108,4 +135,5 @@ while run:
     up1.update()
     display.update()
     clock.tick(60)
+
 
